@@ -1,12 +1,18 @@
 package com.application.cloudo.service;
 
 import com.application.cloudo.domain.Record;
+import com.application.cloudo.domain.User;
+import com.application.cloudo.dto.record.RecordAddResponseDto;
+import com.application.cloudo.dto.record.RecordGetResponseDto;
 import com.application.cloudo.repository.RecordRepository;
+import com.application.cloudo.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -14,8 +20,28 @@ import java.util.List;
 public class RecordService {
 
     private final RecordRepository recordRepository;
+    private final UserRepository userRepository;
 
-    public void getRecords() {
-        List<Record> testList = recordRepository.findRecordByUserOrderByCreatedDateAsc();
+    public RecordGetResponseDto findRecordByUserNameOrderByAsc(String name) {
+        List<Record> foundRecord = recordRepository.findRecordByUserNameOrderByCreatedDateAsc(name);
+
+        return RecordGetResponseDto.from(foundRecord);
+    }
+
+    public RecordGetResponseDto findRecordByUserNameOrderByDesc(String name) {
+        List<Record> foundRecord = recordRepository.findRecordByUserNameOrderByCreatedDateDesc(name);
+
+        return RecordGetResponseDto.from(foundRecord);
+    }
+
+    public RecordAddResponseDto addRecordByUserName(String name, String content, LocalDateTime dueDate) {
+        System.out.println("name = " + name);
+        Optional<User> foundUser = userRepository.findUserByNameIs(name);
+        if (foundUser.isPresent()) {
+            Record createdRecord = new Record(content, foundUser.get(), dueDate);
+            foundUser.get().addRecord(createdRecord);
+            recordRepository.save(createdRecord);
+            return RecordAddResponseDto.from(foundUser.get().getName());
+        } else return RecordAddResponseDto.from("not found");
     }
 }
