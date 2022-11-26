@@ -12,7 +12,9 @@ import java.time.LocalDateTime;
 public class Record {
 
     @Id
-    private Long recordId;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "record_id")
+    private Long id;
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -21,15 +23,13 @@ public class Record {
     private LocalDateTime createdDate;
     private LocalDateTime dueDate;
 
-    private int finished;
+    private int recordDone;
 
-    public Record(Long recordId, String content, User user, LocalDateTime dueDate) {
-        this.recordId = recordId;
+    public Record(String content, User user, LocalDateTime recordDueDate) {
         this.content = content;
         this.user = user;
+        this.dueDate = recordDueDate;
         this.createdDate = LocalDateTime.now();
-        this.dueDate = dueDate;
-        this.finished = 0;
     }
 
     public void setUser(User user) {

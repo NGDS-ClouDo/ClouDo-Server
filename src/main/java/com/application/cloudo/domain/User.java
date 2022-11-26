@@ -1,6 +1,6 @@
 package com.application.cloudo.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -14,19 +14,23 @@ import java.util.List;
 public class User {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "user_id")
     private Long id;
 
     private String name;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    @JsonIgnore
     private List<Record> records = new ArrayList<>();
 
-    public User(Long id, String name, List<Record> records) {
-        this.id = id;
+
+    @Builder
+    public User(String name) {
         this.name = name;
-        this.records = records;
+    }
+
+    public void setUserName(String name) {
+        this.name = name;
     }
 
     public void addRecord(Record record) {
