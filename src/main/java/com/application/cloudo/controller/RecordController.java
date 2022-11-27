@@ -10,8 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-
 @Slf4j
 @RestController
 @RequestMapping("/api/v1")
@@ -32,9 +30,7 @@ public class RecordController {
 
     @PostMapping("/record/{userName}")
     public ApiResponse<RecordAddResponseDto> addRecord(@PathVariable("userName") String userName, @RequestBody RecordAddRequestDto request) {
-        LocalDateTime time = LocalDateTime.now();
-//        return ApiResponse.success(HttpStatus.OK, recordService.addRecordByUserName(userName, request.getContent(), request.getRecordDueDate()));
-        return ApiResponse.success(HttpStatus.OK, recordService.addRecordByUserName(userName, request.getContent(), time));
+        return ApiResponse.success(HttpStatus.OK, recordService.addRecordByUserName(userName, request.getContent(), request.getRecordDueDate()));
     }
 
 }
