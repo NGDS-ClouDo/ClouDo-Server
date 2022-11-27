@@ -34,12 +34,18 @@ public class RecordService {
         return RecordGetResponseDto.from(foundRecord);
     }
 
+    @Transactional
     public RecordAddResponseDto addRecordByUserName(String name, String content, LocalDateTime dueDate) {
         System.out.println("name = " + name);
         Optional<User> foundUser = userRepository.findUserByNameIs(name);
         if (foundUser.isPresent()) {
-            Record createdRecord = new Record(content, foundUser.get(), dueDate);
+            Record createdRecord = Record.builder()
+                    .user(foundUser.get())
+                    .content(content)
+                    .recordDueDate(dueDate)
+                    .build();
             foundUser.get().addRecord(createdRecord);
+            userRepository.save(foundUser.get());
             recordRepository.save(createdRecord);
             return RecordAddResponseDto.from(foundUser.get().getName());
         } else return RecordAddResponseDto.from("not found");
