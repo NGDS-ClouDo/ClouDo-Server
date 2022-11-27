@@ -38,4 +38,8 @@ public class Record {
     public void setUser(User user) {
         this.user = user;
     }
+
+    public void setRecordDone() {
+        this.recordDone = 1;
+    }
 }
