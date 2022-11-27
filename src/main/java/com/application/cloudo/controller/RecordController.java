@@ -2,6 +2,7 @@ package com.application.cloudo.controller;
 
 import com.application.cloudo.dto.record.RecordAddRequestDto;
 import com.application.cloudo.dto.record.RecordAddResponseDto;
+import com.application.cloudo.dto.record.RecordDoneResponseDto;
 import com.application.cloudo.dto.record.RecordGetResponseDto;
 import com.application.cloudo.service.RecordService;
 import com.application.cloudo.util.ApiResponse;
@@ -31,6 +32,11 @@ public class RecordController {
     @PostMapping("/record/{userName}")
     public ApiResponse<RecordAddResponseDto> addRecord(@PathVariable("userName") String userName, @RequestBody RecordAddRequestDto request) {
         return ApiResponse.success(HttpStatus.OK, recordService.addRecordByUserName(userName, request.getContent(), request.getRecordDueDate()));
+    }
+
+    @PatchMapping("/record/{userName}/{recordId}")
+    public ApiResponse<RecordDoneResponseDto> updateRecordFinishedState(@PathVariable("userName") String userName, @PathVariable("recordId") Long recordId) {
+        return ApiResponse.success(HttpStatus.OK, recordService.setRecordFinished(userName, recordId));
     }
 
 
