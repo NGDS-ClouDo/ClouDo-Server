@@ -3,6 +3,7 @@ package com.application.cloudo.service;
 import com.application.cloudo.domain.Record;
 import com.application.cloudo.domain.User;
 import com.application.cloudo.dto.record.RecordAddResponseDto;
+import com.application.cloudo.dto.record.RecordDoneResponseDto;
 import com.application.cloudo.dto.record.RecordGetResponseDto;
 import com.application.cloudo.repository.RecordRepository;
 import com.application.cloudo.repository.UserRepository;
@@ -48,7 +49,6 @@ public class RecordService {
 
     @Transactional
     public RecordAddResponseDto addRecordByUserName(String name, String content, LocalDateTime dueDate) {
-        System.out.println("name = " + name);
         Optional<User> foundUser = userRepository.findUserByNameIs(name);
         if (foundUser.isPresent()) {
             Record createdRecord = Record.builder()
@@ -61,5 +61,15 @@ public class RecordService {
             recordRepository.save(createdRecord);
             return RecordAddResponseDto.from(foundUser.get().getName());
         } else return RecordAddResponseDto.from("not found");
+    }
+
+    @Transactional
+    public RecordDoneResponseDto setRecordFinished(String name, Long recordId) {
+        Optional<Record> foundRecord = recordRepository.findRecordByIdAndByUserName(recordId, name);
+        if (foundRecord.isPresent()) {
+            foundRecord.get().setRecordDone();
+            recordRepository.save(foundRecord.get());
+            return RecordDoneResponseDto.from("Record Finished State Updated");
+        } else return RecordDoneResponseDto.from("update failed");
     }
 }
