@@ -1,5 +1,6 @@
 package com.application.cloudo.domain;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -25,11 +26,13 @@ public class Record {
 
     private int recordDone;
 
+    @Builder
     public Record(String content, User user, LocalDateTime recordDueDate) {
         this.content = content;
         this.user = user;
         this.dueDate = recordDueDate;
         this.createdDate = LocalDateTime.now();
+        this.recordDone = 0;
     }
 
     public void setUser(User user) {
