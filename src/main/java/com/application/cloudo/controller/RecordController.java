@@ -33,4 +33,14 @@ public class RecordController {
         return ApiResponse.success(HttpStatus.OK, recordService.addRecordByUserName(userName, request.getContent(), request.getRecordDueDate()));
     }
 
+
+    @GetMapping("/record/{userName}/finished/asc")
+    public ApiResponse<RecordGetResponseDto> getFinishedRecordByUserNameOrderByAsc(@PathVariable("userName") String userName) {
+        return ApiResponse.success(HttpStatus.OK, recordService.findFinishedRecordByUserNameOrderByAsc(userName));
+    }
+
+    @GetMapping("/record/{userName}/finished/desc")
+    public ApiResponse<RecordGetResponseDto> getFinishedRecordByUserNameOrderByDesc(@PathVariable("userName") String userName) {
+        return ApiResponse.success(HttpStatus.OK, recordService.findFinishedRecordByUserNameOrderByDesc(userName));
+    }
 }
