@@ -34,6 +34,18 @@ public class RecordService {
         return RecordGetResponseDto.from(foundRecord);
     }
 
+    public RecordGetResponseDto findFinishedRecordByUserNameOrderByAsc(String name) {
+        List<Record> foundRecord = recordRepository.findFinishedRecordByUserNameOrderByCreatedDateAsc(name);
+
+        return RecordGetResponseDto.from(foundRecord);
+    }
+
+    public RecordGetResponseDto findFinishedRecordByUserNameOrderByDesc(String name) {
+        List<Record> foundRecord = recordRepository.findFinishedRecordByUserNameOrderByCreatedDateDesc(name);
+
+        return RecordGetResponseDto.from(foundRecord);
+    }
+
     @Transactional
     public RecordAddResponseDto addRecordByUserName(String name, String content, LocalDateTime dueDate) {
         System.out.println("name = " + name);
