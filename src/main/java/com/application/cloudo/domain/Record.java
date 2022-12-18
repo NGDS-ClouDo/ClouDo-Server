@@ -16,18 +16,23 @@ public class Record {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "record_id")
     private Long id;
+    private String recordName;
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    private String category = "";
+
     private LocalDateTime createdDate;
     private LocalDateTime dueDate;
 
     private int recordDone;
 
     @Builder
-    public Record(String content, User user, LocalDateTime recordDueDate) {
+    public Record(String name, String content, User user, LocalDateTime recordDueDate) {
+        this.recordName = name;
         this.content = content;
         this.user = user;
         this.dueDate = recordDueDate;
@@ -39,7 +44,19 @@ public class Record {
         this.user = user;
     }
 
+    public void setRecordContent(String content) {
+        this.content = content;
+    }
+
     public void setRecordDone() {
         this.recordDone = 1;
+    }
+
+    public void setRecordUndone() {
+        this.recordDone = 0;
+    }
+
+    public void setCategory(String category){
+        this.category = category;
     }
 }

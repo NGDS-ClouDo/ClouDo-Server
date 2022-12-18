@@ -28,6 +28,26 @@ public interface RecordRepository extends JpaRepository<Record, Long> {
 
     @Query("select r " +
             "from Record r " +
+            "where r.user.name = :name " +
+            "and r.category = :category " +
+            "order by r.createdDate asc")
+    List<Record> findRecordByUserNameAndCategoryOrderByCreatedDateAsc(
+            @Param("name") String name,
+            @Param("category") String category
+    );
+
+    @Query("select r " +
+            "from Record r " +
+            "where r.user.name = :name " +
+            "and r.category = :category " +
+            "order by r.createdDate desc")
+    List<Record> findRecordByUserNameAndCategoryOrderByCreatedDateDesc(
+            @Param("name") String name,
+            @Param("category") String category
+    );
+
+    @Query("select r " +
+            "from Record r " +
             "where r.recordDone = 1 " +
             "and r.user.name = :name " +
             "order by r.createdDate asc")
@@ -51,5 +71,14 @@ public interface RecordRepository extends JpaRepository<Record, Long> {
     Optional<Record> findRecordByIdAndByUserName(
             @Param("recordId") Long recordId,
             @Param("userName") String userName
+    );
+
+    @Query("select r " +
+            "from Record r " +
+            "where r.id = :recordId " +
+            "and r.user.id = :userId ")
+    Optional<Record> findRecordByIdAndByUserId(
+            @Param("recordId") Long recordId,
+            @Param("userId") Long userId
     );
 }

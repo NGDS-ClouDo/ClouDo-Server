@@ -1,11 +1,14 @@
 server:
-  port: 8090
+  port: 3001
 spring:
   jackson:
     serialization:
       fail-on-empty-beans: false
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://wdw-server.cwas4ywuxhjs.ap-northeast-2.rds.amazonaws.com/cloudo?zeroDateTimeBehavior=convertToNull
+    username: master
+    password: wdw1234!
 
   mvc:
     pathmatch:
@@ -14,9 +17,10 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+#      ddl-auto: create
     properties:
       hibernate:
-        #        show_sql: true
+        show_sql: true
         format_sql: true
 
 
